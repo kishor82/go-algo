@@ -15,7 +15,6 @@ type Node struct {
 func (n *Node) Insert(value, data string) error {
 	if n == nil {
 		return errors.New("Cannot insert a value into a nil tree")
-		// Return error heere
 	}
 
 	switch {
@@ -38,6 +37,21 @@ func (n *Node) Insert(value, data string) error {
 	}
 
 	return nil
+}
+
+func (n *Node) Find(s string) (string, bool) {
+	if n == nil {
+		return "", false
+	}
+
+	switch {
+	case s == n.Value:
+		return n.Data, true
+	case s < n.Value:
+		return n.Left.Find(s)
+	default:
+		return n.Right.Find(s)
+	}
 }
 
 func main() {
