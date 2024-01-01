@@ -54,6 +54,72 @@ func (n *Node) Find(s string) (string, bool) {
 	}
 }
 
+// findMax finds the maximum element in a (sub-)tree. Its value replaces the value of the to-be-deleted node.
+// Return values: the node itself and its parent node.
+func (n *Node) findMax(parent *Node) (*Node, *Node) {
+	if n == nil {
+		return nil, parent
+	}
+
+	if n.Right == nil {
+		return n, parent
+	}
+
+	return n.Right.findMax(n)
+}
+
+// replaceNode replaces the parent’s child pointer to n with a pointer to the replacement node.
+// parent must not be nil.
+func (n *Node) replaceNode(parent, replacement *Node) error {
+	if n == nil {
+		return errors.New("replaceNode() not allowed on a nil node")
+	}
+
+	if n == parent.Left {
+		parent.Left = replacement
+		return nil
+	}
+
+	parent.Right = replacement
+
+	return nil
+}
+
+func (n *Node) Delete(s string, parent *Node) error {
+	if n == nil {
+		return errors.New("Value to be deleted does not exist in the tree")
+	}
+
+	switch {
+	case s < n.Value:
+		n.Left.Delete(s, n)
+	case s > n.Value:
+		n.Right.Delete(s, n)
+	default:
+		if n.Left == nil && n.Right == nil {
+			n.replaceNode(parent, nil)
+			return nil
+		}
+
+		if n.Left == nil {
+			n.replaceNode(parent, n.Right)
+			return nil
+		}
+
+		if n.Right == nil {
+			n.replaceNode(parent, n.Left)
+			return nil
+		}
+	}
+
+	replacement, replParent := n.Left.findMax(n)
+
+	n.Value = replacement.Value
+	n.Data = replParent.Data
+
+	return replParent.Delete(replacement.Value, replParent)
+}
+
 func main() {
 	fmt.Println("Hello Kishor!")
 }
