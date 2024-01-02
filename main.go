@@ -123,3 +123,27 @@ func (n *Node) Delete(s string, parent *Node) error {
 func main() {
 	fmt.Println("Hello Kishor!")
 }
+
+type Tree struct {
+	Root *Node
+}
+
+func (t *Tree) Insert(value, data string) error {
+	if t.Root == nil {
+		t.Root = &Node{Value: value, Data: data}
+		return nil
+	}
+
+	return t.Root.Insert(value, data)
+}
+
+func (t *Tree) Find(s string) (string, bool) {
+	if t.Root == nil {
+		return "", false
+	}
+	return t.Root.Find(s)
+}
+
+// TODO:Delete
+
+// TODO:Travese
