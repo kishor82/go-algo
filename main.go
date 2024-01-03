@@ -144,6 +144,22 @@ func (t *Tree) Find(s string) (string, bool) {
 	return t.Root.Find(s)
 }
 
-// TODO:Delete
+func (t *Tree) Delete(s string) error {
+	if t.Root == nil {
+		return errors.New("Cannot delete from an empty tree")
+	}
+
+	fakeParent := &Node{Right: t.Root}
+	err := t.Root.Delete(s, fakeParent)
+	if err != nil {
+		return err
+	}
+
+	if fakeParent.Right == nil {
+		t.Root = nil
+	}
+
+	return nil
+}
 
 // TODO:Travese
