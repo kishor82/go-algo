@@ -162,4 +162,12 @@ func (t *Tree) Delete(s string) error {
 	return nil
 }
 
-// TODO:Travese
+func (t *Tree) Traverse(n *Node, f func(*Node)) {
+	if n == nil {
+		return
+	}
+
+	t.Traverse(n.Left, f)
+	f(n)
+	t.Traverse(n.Right, f)
+}
