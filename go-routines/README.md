@@ -51,3 +51,46 @@ Goroutines solve several problems in concurrent programming:
 - It becomes more important in complex programs or long-running applications.
 - Always close channels when using them with for-range loops.
 - Closing is typically the responsibility of the sender, not the receiver.
+
+
+# Unbuffered vs Buffered Channels:
+
+1. Unbuffered Channels (like in the example):
+   - Has no capacity to hold data
+   - Sends block until there's a receiver ready
+   - Receives block until there's a sender ready
+   - Provides synchronization between goroutines
+
+2. Buffered Channels:
+   - Has a capacity to hold one or more values
+   - Sends only block when the buffer is full
+   - Receives only block when the buffer is empty
+
+When and why to use Buffered Channels:
+
+1. Decoupling:
+   - When you want to reduce synchronization between sender and receiver
+   - Allows sender to send multiple values without waiting for each to be received
+
+2. Performance:
+   - Can improve performance in scenarios where you want to minimize goroutine blocking
+   - Useful when processing speed differs between producer and consumer
+
+3. Batch Processing:
+   - When you want to process data in batches rather than one by one
+
+4. Throttling:
+   - To limit the number of concurrent operations
+
+5. Avoiding Deadlocks:
+   - In some scenarios, buffered channels can help prevent deadlocks
+
+Example of a Buffered Channel:
+
+```go
+c := make(chan int, 2)  // Buffered channel with capacity 2
+c <- 1  // Doesn't block
+c <- 2  // Doesn't block
+c <- 3  // This would block until someone receives from the channel
+```
+
