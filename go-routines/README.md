@@ -44,3 +44,10 @@ Goroutines solve several problems in concurrent programming:
 7. **Use Context for Cancellation**:
    - Implement cancellation mechanisms using `context.Context` to stop long-running goroutines.
 
+
+## Remember these key points:
+
+- Closing channels is not always necessary, especially in simple, short-lived programs.
+- It becomes more important in complex programs or long-running applications.
+- Always close channels when using them with for-range loops.
+- Closing is typically the responsibility of the sender, not the receiver.
